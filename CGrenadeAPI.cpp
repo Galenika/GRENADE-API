@@ -124,7 +124,7 @@ bool CGrenadeAPI::bUpdateGrenadeInfo(std::string szMapName)
 			this->GrenadeInfo[i].szWeapon = szParseWeapon;
 			this->GrenadeInfo[i].vecOrigin = Vector(atof(szParseOriginx.c_str()), atof(szParseOriginy.c_str()), atof(szParseOriginz.c_str()));
 			this->GrenadeInfo[i].vecViewangles = Vector(atof(szParseViewx.c_str()), atof(szParseViewy.c_str()), 0);
-
+			this->GrenadeInfo[i].vecOrigin.z -= 64.f;
 			size_t nPos = responce.find("</view_y>");
 			responce.erase(0, nPos + 7);
 		}
