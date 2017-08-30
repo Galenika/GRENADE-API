@@ -62,7 +62,7 @@ private:
 
 public:
 	bool bUpdateGrenadeInfo(std::string szMapName);
-	bool GetInfo(int iNum, GrenadeInfo_t& info);
+	bool GetInfo(int iNum, GrenadeInfo_t* info);
 };
 
 
