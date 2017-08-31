@@ -78,24 +78,19 @@ std::string CGrenadeAPI::HttpGet(std::string hostaddr, std::string api)
 
 bool CGrenadeAPI::bUpdateGrenadeInfo(std::string szMapName)
 {
+	this->GrenadeInfo.clear();
+	
 	std::string responce = this->HttpGet(this->szHost, this->szApi + szMapName);
 	if (responce.empty())
-	{
-		this->GrenadeInfo.clear();
 		return false;
-	}
 
 	if (!this->parseString("<error>", "</errpr>", responce).empty())
-	{
-		this->GrenadeInfo.clear();
 		return false;
-	}
+	
 	int i = 0;
 	
 	while(true)
 	{
-		this->GrenadeInfo[i].Clear();
-
 		if (responce.find("<id>" + std::to_string(i) + "</id>") == std::string::npos)
 			break;
 			
