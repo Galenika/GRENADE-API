@@ -38,16 +38,6 @@ struct GrenadeInfo_t
 	std::string szWeapon; // GrenadeName
 	Vector vecOrigin; // Position
 	Vector vecViewangles; // Angle
-
-	void Clear()
-	{
-		id = 0;
-		szName.clear();
-		szDescription.clear();
-		szWeapon.clear();
-		vecOrigin.Zero();
-		vecViewangles.Zero();
-	}
 };
 
 class CGrenadeAPI
