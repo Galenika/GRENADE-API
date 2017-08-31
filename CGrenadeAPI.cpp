@@ -123,6 +123,8 @@ bool CGrenadeAPI::bUpdateGrenadeInfo(std::string szMapName)
 
 		size_t nPos = responce.find("</view_y>");
 		responce.erase(0, nPos + 7);
+		
+		i++;
 
 	}
 	return true;
