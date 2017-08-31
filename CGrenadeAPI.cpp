@@ -81,65 +81,66 @@ bool CGrenadeAPI::bUpdateGrenadeInfo(std::string szMapName)
 	std::string responce = this->HttpGet(this->szHost, this->szApi + szMapName);
 	if (responce.empty())
 	{
-		for (int i = 0; i < 100; i++)
-			this->GrenadeInfo[i].Clear();
-
-
+		this->GrenadeInfo.clear();
 		return false;
 	}
 
-	if (responce.find("error") != std::string::npos)
+	if (!this->parseString("<error>", "</errpr>", responce).empty())
 	{
-		for (int i = 0; i < 100; i++)
-			this->GrenadeInfo[i].Clear();
-
-
+		this->GrenadeInfo.clear();
 		return false;
 	}
-
-	for (int i = 0; i < 100; i++)
+	int i = 0;
+	
+	while(true)
 	{
 		this->GrenadeInfo[i].Clear();
 
-		if (responce.find("<id>" + std::to_string(i) + "</id>") != std::string::npos)
-		{
-			std::string szParseId = this->parseString("<id>", "</id>", responce);
-			std::string szParseName = this->parseString("<name>", "</name>", responce);
-			std::string szParseDescription = this->parseString("<description>", "</description>", responce);
-			std::string szParseWeapon = this->parseString("<grenade>", "</grenade>", responce);
+		if (responce.find("<id>" + std::to_string(i) + "</id>") == std::string::npos)
+			break;
+			
+		std::string szParseId = this->parseString("<id>", "</id>", responce);
+		std::string szParseName = this->parseString("<name>", "</name>", responce);
+		std::string szParseDescription = this->parseString("<description>", "</description>", responce);
+		std::string szParseWeapon = this->parseString("<grenade>", "</grenade>", responce);
 
-			std::string szParseOriginx = this->parseString("<player_x>", "</player_x>", responce);
-			std::string szParseOriginy = this->parseString("<player_y>", "</player_y>", responce);
-			std::string szParseOriginz = this->parseString("<player_z>", "</player_z>", responce);
+		std::string szParseOriginx = this->parseString("<player_x>", "</player_x>", responce);
+		std::string szParseOriginy = this->parseString("<player_y>", "</player_y>", responce);
+		std::string szParseOriginz = this->parseString("<player_z>", "</player_z>", responce);
 
-			std::string szParseViewx = this->parseString("<view_x>", "</view_x>", responce);
-			std::string szParseViewy = this->parseString("<view_y>", "</view_y>", responce);
+		std::string szParseViewx = this->parseString("<view_x>", "</view_x>", responce);
+		std::string szParseViewy = this->parseString("<view_y>", "</view_y>", responce);
 
-			if (szParseId.empty() || szParseName.empty() || szParseDescription.empty() || szParseWeapon.empty())
-				return false;
+		if (szParseId.empty() || szParseName.empty() || szParseDescription.empty() || szParseWeapon.empty())
+			break;
 
-			this->GrenadeInfo[i].id = atoi(szParseId.c_str());
-			this->GrenadeInfo[i].szName = szParseName;
-			this->GrenadeInfo[i].szDescription = szParseDescription;
-			this->GrenadeInfo[i].szWeapon = szParseWeapon;
-			this->GrenadeInfo[i].vecOrigin = Vector(atof(szParseOriginx.c_str()), atof(szParseOriginy.c_str()), atof(szParseOriginz.c_str()));
-			this->GrenadeInfo[i].vecViewangles = Vector(atof(szParseViewx.c_str()), atof(szParseViewy.c_str()), 0);
-			this->GrenadeInfo[i].vecOrigin.z -= 64.f;
-			size_t nPos = responce.find("</view_y>");
-			responce.erase(0, nPos + 7);
-		}
+		GrenadeInfo_t info;
+
+		info.id = atoi(szParseId.c_str());
+		info.szName = szParseName;
+		info.szDescription = szParseDescription;
+		info.szWeapon = szParseWeapon;
+		info.vecOrigin = Vector(atof(szParseOriginx.c_str()), atof(szParseOriginy.c_str()), atof(szParseOriginz.c_str()));
+		info.vecViewangles = Vector(atof(szParseViewx.c_str()), atof(szParseViewy.c_str()), 0);
+		info.vecOrigin.z -= 64.f;
+
+		this->GrenadeInfo.push_back(info);
+
+		size_t nPos = responce.find("</view_y>");
+		responce.erase(0, nPos + 7);
+
 	}
 	return true;
 }
 
 bool CGrenadeAPI::GetInfo(int iNum, GrenadeInfo_t * info)
 {
-	if (iNum < 0 || iNum > 99)
+	if (iNum < 0 || iNum > this->GrenadeInfo.size())
 		return false;
 
-	if (this->GrenadeInfo[iNum].id > 0 && !this->GrenadeInfo[iNum].szDescription.empty() && !this->GrenadeInfo[iNum].szName.empty() && !this->GrenadeInfo[iNum].szWeapon.empty())
+	if (this->GrenadeInfo.at(iNum).id > 0 && !this->GrenadeInfo.at(iNum).szDescription.empty() && !this->GrenadeInfo.at(iNum).szName.empty() && !this->GrenadeInfo.at(iNum).szWeapon.empty())
 	{
-		*info = this->GrenadeInfo[iNum];
+		*info = this->GrenadeInf.at(iNum);
 		return true;
 	}
 	else return false;
