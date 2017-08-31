@@ -53,8 +53,6 @@ struct GrenadeInfo_t
 class CGrenadeAPI
 {
 private:
-	std::vector<GrenadeInfo_t> GrenadeInfo;
-
 	std::string szHost = "moveax.eu";
 	std::string szApi = "/grenade/api/getInfo?map=";
 
@@ -62,6 +60,7 @@ private:
 	std::string parseString(std::string szBefore, std::string szAfter, std::string szSource);
 
 public:
+	std::vector<GrenadeInfo_t> GrenadeInfo;
 	bool bUpdateGrenadeInfo(std::string szMapName);
 	bool GetInfo(int iNum, GrenadeInfo_t* info);
 };
