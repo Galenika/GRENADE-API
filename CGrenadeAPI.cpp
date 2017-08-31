@@ -124,7 +124,7 @@ bool CGrenadeAPI::bUpdateGrenadeInfo(std::string szMapName)
 		info.vecViewangles = Vector(atof(szParseViewx.c_str()), atof(szParseViewy.c_str()), 0);
 		info.vecOrigin.z -= 64.f;
 
-		this->GrenadeInfo.push_back(info);
+		GrenadeInfo.push_back(info);
 
 		size_t nPos = responce.find("</view_y>");
 		responce.erase(0, nPos + 7);
@@ -135,12 +135,12 @@ bool CGrenadeAPI::bUpdateGrenadeInfo(std::string szMapName)
 
 bool CGrenadeAPI::GetInfo(int iNum, GrenadeInfo_t * info)
 {
-	if (iNum < 0 || iNum > this->GrenadeInfo.size())
+	if (iNum < 0 || iNum > GrenadeInfo.size())
 		return false;
 
-	if (this->GrenadeInfo.at(iNum).id > 0 && !this->GrenadeInfo.at(iNum).szDescription.empty() && !this->GrenadeInfo.at(iNum).szName.empty() && !this->GrenadeInfo.at(iNum).szWeapon.empty())
+	if (GrenadeInfo.at(iNum).id > 0 && !GrenadeInfo.at(iNum).szDescription.empty() && !GrenadeInfo.at(iNum).szName.empty() && !GrenadeInfo.at(iNum).szWeapon.empty())
 	{
-		*info = this->GrenadeInf.at(iNum);
+		*info = GrenadeInf.at(iNum);
 		return true;
 	}
 	else return false;
