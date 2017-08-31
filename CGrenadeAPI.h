@@ -19,6 +19,7 @@
 #include "Vector.h"
 #include <WinSock.h>
 #include <Windns.h>
+#include <vector>
 #pragma comment (lib, "iphlpapi.lib")
 #pragma comment (lib, "Wininet.lib")
 #pragma comment (lib, "urlmon.lib")
@@ -52,7 +53,7 @@ struct GrenadeInfo_t
 class CGrenadeAPI
 {
 private:
-	GrenadeInfo_t GrenadeInfo[100];
+	std::vector<GrenadeInfo_t> GrenadeInfo;
 
 	std::string szHost = "moveax.eu";
 	std::string szApi = "/grenade/api/getInfo?map=";
