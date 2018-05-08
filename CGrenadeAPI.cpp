@@ -84,7 +84,7 @@ bool CGrenadeAPI::bUpdateGrenadeInfo(std::string szMapName)
 	if (responce.empty())
 		return false;
 
-	if (!this->parseString("<error>", "</errpr>", responce).empty())
+	if (!this->parseString("<error>", "</error>", responce).empty())
 		return false;
 	
 	int i = 0;
@@ -137,7 +137,7 @@ bool CGrenadeAPI::GetInfo(int iNum, GrenadeInfo_t * info)
 
 	if (GrenadeInfo.at(iNum).id > 0 && !GrenadeInfo.at(iNum).szDescription.empty() && !GrenadeInfo.at(iNum).szName.empty() && !GrenadeInfo.at(iNum).szWeapon.empty())
 	{
-		*info = GrenadeInf.at(iNum);
+		*info = GrenadeInfo.at(iNum);
 		return true;
 	}
 	else return false;
